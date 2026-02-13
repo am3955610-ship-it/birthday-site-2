@@ -3,71 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday</title>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
+<title>Surprise</title>
 
 <style>
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
-body {background:#0f0f0f;color:white;overflow-x:hidden;}
-section {height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:20px;}
-h1,h2,p {opacity:0;transform:translateY(40px);transition:all 1s ease;}
-.show {opacity:1 !important;transform:translateY(0px) !important;}
-.scene1 {background: linear-gradient(135deg, #000000, #1a1a1a);}
-.scene2 {background:#141414;}
-.scene3 {background:#1c1c1c;}
-button {margin-top:20px;padding:12px 30px;border:none;border-radius:30px;background:#ff4d6d;color:white;font-size:16px;cursor:pointer;transition:0.3s;}
-button:hover {background:#ff1e4d;transform:scale(1.05);}
-.confetti {position:fixed;width:10px;height:10px;top:-10px;animation:fall 3s linear forwards;}
-@keyframes fall {to {transform: translateY(100vh) rotate(360deg);opacity:0;}}
+body{
+  margin:0;
+  padding:0;
+  font-family:'Tahoma',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(135deg,#3e2723,#5d4037,#4e342e);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+  color:#fff;
+  text-align:center;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+section{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:absolute;
+  width:100%;
+  height:100%;
+  padding:20px;
+  animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+.active{display:flex;}
+
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(145deg,#6d4c41,#8d6e63);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s;
+  margin:10px;
+  position:relative;
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+
+/* 🎬 المشهد النهائي */
+#finalScene{
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(6px);
+}
+
+#finalText{
+  font-size:26px;
+  line-height:1.8;
+  max-width:750px;
+  opacity:0;
+  text-shadow:0 0 10px rgba(255,255,255,0.3);
+}
+
+.glow{
+  animation:glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse{
+  from{text-shadow:0 0 5px rgba(255,255,255,0.2);}
+  to{text-shadow:0 0 20px rgba(255,255,255,0.7);}
+}
+
 </style>
 </head>
 
 <body>
 
-<section class="scene1">
-  <h1>كل سنة وأنتِ طيبة ❤️</h1>
-  <p>النهاردة مش يوم عادي...</p>
+<audio id="finalMusic" src="soft-music.mp3"></audio>
+
+<section id="scene1" class="active">
+  <h1>ازيك🐧</h1>
+  <button onclick="nextScene('scene2')">التالي</button>
 </section>
 
-<section class="scene2">
-  <h2>في يوم زي ده</h2>
-  <p>اتولد حد غيّر معنى الأيام بالنسبة لي.</p>
+<section id="scene2">
+  <h2>اوك عارف أنه موضوع غريب أني باعت لك الموقع ده بس على الأقل أحسن من مفيش</h2>
+  <button onclick="nextScene('scene3')">التالي</button>
 </section>
 
-<section class="scene3">
-  <h2>وعندي ليكي حاجة صغيرة 🎁</h2>
-  <button onclick="surprise()">اضغطي هنا</button>
-  <p id="finalMessage" style="margin-top:20px;"></p>
+<section id="scene3">
+  <h2>عايز أوريلك حاجة</h2>
+  <button onclick="nextScene('choiceScene')">التالي</button>
+</section>
+
+<section id="choiceScene">
+  <h2>موافقة تشوفي؟</h2>
+  <div>
+    <button id="yesBtn" onclick="finalScene()">اه أكيد</button>
+    <button id="noBtn">لا</button>
+  </div>
+</section>
+
+<section id="finalScene">
+  <h2 id="finalText"></h2>
 </section>
 
 <script>
-// Scroll animation
-const elements = document.querySelectorAll("h1,h2,p");
-function checkScroll() {
-  const triggerBottom = window.innerHeight*0.8;
-  elements.forEach(el=>{
-    const boxTop = el.getBoundingClientRect().top;
-    if(boxTop<triggerBottom){el.classList.add("show");}
+
+function nextScene(id){
+  document.querySelectorAll("section").forEach(sec=>{
+    sec.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+}
+
+/* تحديد الجهاز */
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+if(!isMobile){
+  // زرار لا يهرب
+  noBtn.addEventListener("mouseover", ()=>{
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  });
+}else{
+  // زرار اه يكبر
+  let scale = 1;
+  yesBtn.addEventListener("click", ()=>{
+    scale += 0.2;
+    yesBtn.style.transform = `scale(${scale})`;
+    noBtn.style.transform = `translateX(${scale*40}px)`;
   });
 }
-window.addEventListener("scroll",checkScroll);
-checkScroll();
 
-// Surprise button
-function surprise(){
-  document.getElementById("finalMessage").innerHTML =
-    "أتمنى سنتك الجاية تكون مليانة ضحك، نجاح، وحاجات تخلي قلبك مبسوط دايمًا ✨";
-  for(let i=0;i<40;i++){
-    let conf=document.createElement("div");
-    conf.classList.add("confetti");
-    conf.style.left=Math.random()*window.innerWidth+"px";
-    conf.style.backgroundColor=`hsl(${Math.random()*360},100%,60%)`;
-    document.body.appendChild(conf);
-    setTimeout(()=>conf.remove(),3000);
+/* 🎬 المشهد النهائي السينمائي */
+function finalScene(){
+  nextScene("finalScene");
+
+  const music = document.getElementById("finalMusic");
+  music.volume = 0;
+  music.play().catch(()=>{});
+
+  // Fade in للصوت
+  let vol = 0;
+  const fade = setInterval(()=>{
+    if(vol < 0.6){
+      vol += 0.02;
+      music.volume = vol;
+    }else{
+      clearInterval(fade);
+    }
+  },200);
+
+  const message = "كل سنة و أنتي طيبة و بصحة و سلامة و تحققي اللي تتمنيه و يارب تكون سنة سعيدة عليكي 🤎🎉";
+
+  let i = 0;
+  const speed = 55;
+  const textElement = document.getElementById("finalText");
+  textElement.innerHTML = "";
+  textElement.style.opacity = 1;
+  textElement.classList.add("glow");
+
+  function typeWriter(){
+    if(i < message.length){
+      textElement.innerHTML += message.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }else{
+      confetti();
+    }
+  }
+
+  typeWriter();
+}
+
+/* 🎉 Confetti أنعم */
+function confetti(){
+  for(let i=0;i<120;i++){
+    let c=document.createElement("div");
+    c.style.position="absolute";
+    c.style.width="6px";
+    c.style.height="6px";
+    c.style.background=`hsl(${Math.random()*360},70%,65%)`;
+    c.style.top="-10px";
+    c.style.left=Math.random()*100+"%";
+    c.style.opacity=1;
+    c.style.borderRadius="50%";
+    c.style.transition="4s linear";
+    document.body.appendChild(c);
+
+    setTimeout(()=>{
+      c.style.top="100%";
+      c.style.opacity=0;
+    },10);
+
+    setTimeout(()=>{
+      c.remove();
+    },4000);
   }
 }
+
 </script>
 
 </body>
