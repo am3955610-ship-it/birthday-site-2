@@ -3,255 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surprise</title>
+<title>🎂</title>
 
 <style>
 body{
-  margin:0;
-  padding:0;
-  font-family:'Tahoma',sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  overflow:hidden;
-  background:linear-gradient(135deg,#3e2723,#5d4037,#4e342e);
-  background-size:400% 400%;
-  animation:bgMove 12s ease infinite;
-  color:#fff;
-  text-align:center;
+margin:0;
+font-family:'Cairo',sans-serif;
+background:linear-gradient(135deg,#3e2723,#5d4037,#4e342e);
+color:white;
+text-align:center;
+overflow:hidden;
 }
 
-@keyframes bgMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+/* خلفية زخارف */
+body::before{
+content:"🎂 💗 🎂 💗 🎂 💗 🎂 💗 🎂 💗";
+position:fixed;
+font-size:40px;
+opacity:0.08;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:flex;
+flex-wrap:wrap;
+justify-content:space-around;
+align-items:center;
+pointer-events:none;
+z-index:0;
 }
 
-section{
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  position:absolute;
-  width:100%;
-  height:100%;
-  padding:20px;
-  animation:fadeIn 1s ease;
+.scene{
+display:none;
+height:100vh;
+position:relative;
+z-index:2;
+justify-content:center;
+align-items:center;
+flex-direction:column;
 }
 
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
+.active{
+display:flex;
 }
-
-.active{display:flex;}
 
 button{
-  padding:12px 25px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(145deg,#6d4c41,#8d6e63);
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
-  transition:0.3s;
-  margin:10px;
+padding:15px 35px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+background:linear-gradient(145deg,#6d4c41,#8d6e63);
+color:white;
+box-shadow:0 0 15px rgba(255,200,150,0.5);
 }
 
 button:hover{
-  transform:scale(1.1);
+transform:scale(1.1);
+box-shadow:0 0 25px rgba(255,220,180,0.9);
 }
 
-/* 🎬 المشهد النهائي */
-#finalScene{
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(6px);
+.cake{
+font-size:120px;
 }
 
-#finalText{
-  font-size:26px;
-  line-height:1.8;
-  max-width:750px;
-  opacity:0;
-  text-shadow:0 0 10px rgba(255,255,255,0.3);
-  animation:glowPulse 2s infinite alternate;
+.candle{
+font-size:60px;
+cursor:pointer;
 }
 
-@keyframes glowPulse{
-  from{text-shadow:0 0 5px rgba(255,255,255,0.2);}
-  to{text-shadow:0 0 20px rgba(255,255,255,0.8);}
+.final-text{
+font-size:24px;
+animation: glow 2s infinite alternate;
 }
 
-/* 😎 تكبير زرار ايوا برضو */
-.bigBtn{
-  transform:scale(1.2);
+@keyframes glow{
+from{text-shadow:0 0 10px #ffccbc;}
+to{text-shadow:0 0 30px #fff;}
 }
 
-.zoomOut{
-  animation:zoomScene 0.6s ease forwards;
+.balloon{
+position:absolute;
+font-size:40px;
+animation: floatUp 6s linear infinite;
 }
 
-@keyframes zoomScene{
-  from{transform:scale(1);}
-  to{transform:scale(1.1);}
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-120vh);}
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 الصوت -->
-<audio id="finalMusic" loop preload="auto">
-  <source src="soft-music.mp3" type="audio/mpeg">
-</audio>
+<!-- مشهد 1 -->
+<div class="scene active" id="scene1">
+<h1>ازيك 🐧</h1>
+<button onclick="goTo(2)">كملي</button>
+</div>
 
-<section id="scene1" class="active">
-  <h1>ازيك🐧</h1>
-  <button onclick="nextScene('scene2')">التالي</button>
-</section>
+<!-- مشهد 2 -->
+<div class="scene" id="scene2">
+<h2>اوك عارف أنه موضوع غريب أني باعت لك الموقع ده بس على الأقل أحسن من مفيش</h2>
+<button onclick="goTo(3)">طيب</button>
+</div>
 
-<section id="scene2">
-  <h2>اوك عارف أنه موضوع غريب أني باعت لك الموقع ده بس على الأقل أحسن من مفيش</h2>
-  <button onclick="nextScene('scene3')">التالي</button>
-</section>
+<!-- مشهد 3 -->
+<div class="scene" id="scene3">
+<h2>عايز أوريلك حاجة</h2>
+<button id="yesBtn" onclick="goTo(4)">اه أكيد</button>
+<button id="noBtn">لا</button>
+</div>
 
-<section id="scene3">
-  <h2>عايز أوريلك حاجة</h2>
-  <button onclick="nextScene('choiceScene')">التالي</button>
-</section>
+<!-- مشهد 4 -->
+<div class="scene" id="scene4">
+<h2>جامدة الحركة دي صح؟</h2>
+<button onclick="goTo(5)">ايوا</button>
+<button onclick="goTo(5)">ايوا برضو</button>
+</div>
 
-<section id="choiceScene">
-  <h2>موافقة تشوفي؟</h2>
-  <div>
-    <button id="yesBtn" onclick="nextScene('coolScene')">اه أكيد</button>
-    <button id="noBtn">لا</button>
-  </div>
-</section>
+<!-- مشهد 5 -->
+<div class="scene" id="scene5">
+<div class="cake">🎂</div>
+<div style="font-size:40px;">21</div>
+<div class="candle" onclick="blowCandle()">🕯️</div>
+</div>
 
-<!-- 😎 المشهد الجديد -->
-<section id="coolScene">
-  <h2>جامدة الحركة دي صح؟ 😎</h2>
-  <div>
-    <button onclick="goFinal()">ايوا</button>
-    <button class="bigBtn" onclick="goFinal()">ايوا برضو</button>
-  </div>
-</section>
-
-<section id="finalScene">
-  <h2 id="finalText"></h2>
-</section>
+<!-- النهائي -->
+<div class="scene" id="finalScene">
+<h1 class="final-text">
+كل سنة و أنتي طيبة و بصحة و سلامة و تحققي اللي تتمنيه ❤️  
+و يارب تكون سنة سعيدة عليكي 🎉
+</h1>
+</div>
 
 <script>
 
-function nextScene(id){
-  document.querySelectorAll("section").forEach(sec=>{
-    sec.classList.remove("active");
-  });
-  document.getElementById(id).classList.add("active");
+function goTo(num){
+document.querySelectorAll(".scene").forEach(s=>{
+s.classList.remove("active");
+});
+document.getElementById("scene"+num)?.classList.add("active");
 }
 
-/* تحديد الجهاز */
-const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const yesBtn=document.getElementById("yesBtn");
 
-if(!isMobile){
-  noBtn.addEventListener("mouseover", ()=>{
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-  });
-}else{
-  let scale = 1;
-  yesBtn.addEventListener("click", ()=>{
-    scale += 0.2;
-    yesBtn.style.transform = `scale(${scale})`;
-    noBtn.style.transform = `translateX(${scale*40}px)`;
-  });
+/* زرار لا يهرب في اللاب */
+noBtn.addEventListener("mouseover",()=>{
+if(window.innerWidth>768){
+noBtn.style.position="absolute";
+noBtn.style.top=Math.random()*80+"%";
+noBtn.style.left=Math.random()*80+"%";
+}
+});
+
+/* في الموبايل يكبر زرار اه */
+noBtn.addEventListener("click",()=>{
+if(window.innerWidth<=768){
+yesBtn.style.transform="scale(1.4)";
+}
+});
+
+function blowCandle(){
+document.querySelector(".candle").innerHTML="💨";
+setTimeout(()=>{
+document.getElementById("scene5").classList.remove("active");
+document.getElementById("finalScene").classList.add("active");
+startCelebration();
+},1000);
 }
 
-/* 😎 انتقال بزوم خفيف */
-function goFinal(){
-  const scene = document.getElementById("coolScene");
-  scene.classList.add("zoomOut");
-
-  setTimeout(()=>{
-    finalScene();
-  },600);
+function startCelebration(){
+for(let i=0;i<25;i++){
+let balloon=document.createElement("div");
+balloon.className="balloon";
+balloon.innerHTML="🎈";
+balloon.style.left=Math.random()*100+"%";
+balloon.style.animationDuration=(Math.random()*3+3)+"s";
+document.body.appendChild(balloon);
 }
-
-/* 🎬 المشهد النهائي */
-function finalScene(){
-
-  nextScene("finalScene");
-
-  const music = document.getElementById("finalMusic");
-  music.volume = 0;
-  music.play().then(()=>{
-      fadeInMusic(music);
-  }).catch(()=>{});
-
-  const message = "كل سنة و أنتي طيبة و بصحة و سلامة و تحققي اللي تتمنيه و يارب تكون سنة سعيدة عليكي 🤎🎉";
-
-  let i = 0;
-  const speed = 55;
-  const textElement = document.getElementById("finalText");
-  textElement.innerHTML = "";
-  textElement.style.opacity = 1;
-
-  function typeWriter(){
-    if(i < message.length){
-      textElement.innerHTML += message.charAt(i);
-      i++;
-      setTimeout(typeWriter, speed);
-    }else{
-      confetti();
-    }
-  }
-
-  typeWriter();
-}
-
-/* 🔊 Fade in */
-function fadeInMusic(audio){
-  let vol = 0;
-  const fade = setInterval(()=>{
-    if(vol < 0.6){
-      vol += 0.02;
-      audio.volume = vol;
-    }else{
-      clearInterval(fade);
-    }
-  },200);
-}
-
-/* 🎉 احتفال */
-function confetti(){
-  for(let i=0;i<120;i++){
-    let c=document.createElement("div");
-    c.style.position="absolute";
-    c.style.width="6px";
-    c.style.height="6px";
-    c.style.background=`hsl(${Math.random()*360},70%,65%)`;
-    c.style.top="-10px";
-    c.style.left=Math.random()*100+"%";
-    c.style.borderRadius="50%";
-    c.style.transition="4s linear";
-    document.body.appendChild(c);
-
-    setTimeout(()=>{
-      c.style.top="100%";
-      c.style.opacity=0;
-    },10);
-
-    setTimeout(()=>{
-      c.remove();
-    },4000);
-  }
 }
 
 </script>
