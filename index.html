@@ -9,85 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Cairo', sans-serif;
-}
-
-body {
-  background: #0f0f0f;
-  color: white;
-  overflow-x: hidden;
-}
-
-section {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 20px;
-}
-
-h1, h2, p {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 1s ease;
-}
-
-.show {
-  opacity: 1 !important;
-  transform: translateY(0px) !important;
-}
-
-.scene1 {
-  background: linear-gradient(135deg, #000000, #1a1a1a);
-}
-
-.scene2 {
-  background: #141414;
-}
-
-.scene3 {
-  background: #1c1c1c;
-}
-
-button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 30px;
-  background: #ff4d6d;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #ff1e4d;
-  transform: scale(1.05);
-}
-
-/* Confetti simple effect */
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: #ff4d6d;
-  top: -10px;
-  animation: fall 3s linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(360deg);
-    opacity: 0;
-  }
-}
+* {margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body {background:#0f0f0f;color:white;overflow-x:hidden;}
+section {height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:20px;}
+h1,h2,p {opacity:0;transform:translateY(40px);transition:all 1s ease;}
+.show {opacity:1 !important;transform:translateY(0px) !important;}
+.scene1 {background: linear-gradient(135deg, #000000, #1a1a1a);}
+.scene2 {background:#141414;}
+.scene3 {background:#1c1c1c;}
+button {margin-top:20px;padding:12px 30px;border:none;border-radius:30px;background:#ff4d6d;color:white;font-size:16px;cursor:pointer;transition:0.3s;}
+button:hover {background:#ff1e4d;transform:scale(1.05);}
+.confetti {position:fixed;width:10px;height:10px;top:-10px;animation:fall 3s linear forwards;}
+@keyframes fall {to {transform: translateY(100vh) rotate(360deg);opacity:0;}}
 </style>
 </head>
 
@@ -111,36 +44,28 @@ button:hover {
 
 <script>
 // Scroll animation
-const elements = document.querySelectorAll("h1, h2, p");
-
+const elements = document.querySelectorAll("h1,h2,p");
 function checkScroll() {
-  const triggerBottom = window.innerHeight * 0.8;
-
-  elements.forEach(el => {
+  const triggerBottom = window.innerHeight*0.8;
+  elements.forEach(el=>{
     const boxTop = el.getBoundingClientRect().top;
-
-    if (boxTop < triggerBottom) {
-      el.classList.add("show");
-    }
+    if(boxTop<triggerBottom){el.classList.add("show");}
   });
 }
-
-window.addEventListener("scroll", checkScroll);
+window.addEventListener("scroll",checkScroll);
 checkScroll();
 
 // Surprise button
-function surprise() {
+function surprise(){
   document.getElementById("finalMessage").innerHTML =
     "أتمنى سنتك الجاية تكون مليانة ضحك، نجاح، وحاجات تخلي قلبك مبسوط دايمًا ✨";
-
-  for (let i = 0; i < 40; i++) {
-    let conf = document.createElement("div");
+  for(let i=0;i<40;i++){
+    let conf=document.createElement("div");
     conf.classList.add("confetti");
-    conf.style.left = Math.random() * window.innerWidth + "px";
-    conf.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 60%)`;
+    conf.style.left=Math.random()*window.innerWidth+"px";
+    conf.style.backgroundColor=`hsl(${Math.random()*360},100%,60%)`;
     document.body.appendChild(conf);
-
-    setTimeout(() => conf.remove(), 3000);
+    setTimeout(()=>conf.remove(),3000);
   }
 }
 </script>
