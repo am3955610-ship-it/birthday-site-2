@@ -83,6 +83,20 @@ button:hover{
   to{text-shadow:0 0 20px rgba(255,255,255,0.8);}
 }
 
+/* 😎 تكبير زرار ايوا برضو */
+.bigBtn{
+  transform:scale(1.2);
+}
+
+.zoomOut{
+  animation:zoomScene 0.6s ease forwards;
+}
+
+@keyframes zoomScene{
+  from{transform:scale(1);}
+  to{transform:scale(1.1);}
+}
+
 </style>
 </head>
 
@@ -90,7 +104,7 @@ button:hover{
 
 <!-- 🎵 الصوت -->
 <audio id="finalMusic" loop preload="auto">
-  <source src="soft-music.mp3.mp3" type="audio/mpeg">
+  <source src="soft-music.mp3" type="audio/mpeg">
 </audio>
 
 <section id="scene1" class="active">
@@ -111,8 +125,17 @@ button:hover{
 <section id="choiceScene">
   <h2>موافقة تشوفي؟</h2>
   <div>
-    <button id="yesBtn" onclick="finalScene()">اه أكيد</button>
+    <button id="yesBtn" onclick="nextScene('coolScene')">اه أكيد</button>
     <button id="noBtn">لا</button>
+  </div>
+</section>
+
+<!-- 😎 المشهد الجديد -->
+<section id="coolScene">
+  <h2>جامدة الحركة دي صح؟ 😎</h2>
+  <div>
+    <button onclick="goFinal()">ايوا</button>
+    <button class="bigBtn" onclick="goFinal()">ايوا برضو</button>
   </div>
 </section>
 
@@ -129,7 +152,7 @@ function nextScene(id){
   document.getElementById(id).classList.add("active");
 }
 
-/* تحديد نوع الجهاز */
+/* تحديد الجهاز */
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
@@ -151,20 +174,26 @@ if(!isMobile){
   });
 }
 
+/* 😎 انتقال بزوم خفيف */
+function goFinal(){
+  const scene = document.getElementById("coolScene");
+  scene.classList.add("zoomOut");
+
+  setTimeout(()=>{
+    finalScene();
+  },600);
+}
+
 /* 🎬 المشهد النهائي */
 function finalScene(){
 
   nextScene("finalScene");
 
   const music = document.getElementById("finalMusic");
-
-  // تشغيل مضمون
   music.volume = 0;
   music.play().then(()=>{
       fadeInMusic(music);
-  }).catch(e=>{
-      console.log("Autoplay prevented:", e);
-  });
+  }).catch(()=>{});
 
   const message = "كل سنة و أنتي طيبة و بصحة و سلامة و تحققي اللي تتمنيه و يارب تكون سنة سعيدة عليكي 🤎🎉";
 
@@ -187,7 +216,7 @@ function finalScene(){
   typeWriter();
 }
 
-/* 🔊 Fade in للصوت */
+/* 🔊 Fade in */
 function fadeInMusic(audio){
   let vol = 0;
   const fade = setInterval(()=>{
