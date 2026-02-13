@@ -7,8 +7,6 @@
 
 <style>
 body{
-  <audio id="finalMusic" src="soft-music.mp3.mp3"></audio>
-
   margin:0;
   padding:0;
   font-family:'Tahoma',sans-serif;
@@ -59,7 +57,6 @@ button{
   cursor:pointer;
   transition:0.3s;
   margin:10px;
-  position:relative;
 }
 
 button:hover{
@@ -68,7 +65,7 @@ button:hover{
 
 /* 🎬 المشهد النهائي */
 #finalScene{
-  background:rgba(0,0,0,0.65);
+  background:rgba(0,0,0,0.7);
   backdrop-filter:blur(6px);
 }
 
@@ -78,15 +75,12 @@ button:hover{
   max-width:750px;
   opacity:0;
   text-shadow:0 0 10px rgba(255,255,255,0.3);
-}
-
-.glow{
   animation:glowPulse 2s infinite alternate;
 }
 
 @keyframes glowPulse{
   from{text-shadow:0 0 5px rgba(255,255,255,0.2);}
-  to{text-shadow:0 0 20px rgba(255,255,255,0.7);}
+  to{text-shadow:0 0 20px rgba(255,255,255,0.8);}
 }
 
 </style>
@@ -94,7 +88,10 @@ button:hover{
 
 <body>
 
-<audio id="finalMusic" src="soft-music.mp3"></audio>
+<!-- 🎵 الصوت -->
+<audio id="finalMusic" loop preload="auto">
+  <source src="soft-music.mp3.mp3" type="audio/mpeg">
+</audio>
 
 <section id="scene1" class="active">
   <h1>ازيك🐧</h1>
@@ -132,13 +129,12 @@ function nextScene(id){
   document.getElementById(id).classList.add("active");
 }
 
-/* تحديد الجهاز */
+/* تحديد نوع الجهاز */
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 
 if(!isMobile){
-  // زرار لا يهرب
   noBtn.addEventListener("mouseover", ()=>{
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 50);
@@ -147,7 +143,6 @@ if(!isMobile){
     noBtn.style.top = y + "px";
   });
 }else{
-  // زرار اه يكبر
   let scale = 1;
   yesBtn.addEventListener("click", ()=>{
     scale += 0.2;
@@ -156,24 +151,20 @@ if(!isMobile){
   });
 }
 
-/* 🎬 المشهد النهائي السينمائي */
+/* 🎬 المشهد النهائي */
 function finalScene(){
+
   nextScene("finalScene");
 
   const music = document.getElementById("finalMusic");
-  music.volume = 0;
-  music.play().catch(()=>{});
 
-  // Fade in للصوت
-  let vol = 0;
-  const fade = setInterval(()=>{
-    if(vol < 0.6){
-      vol += 0.02;
-      music.volume = vol;
-    }else{
-      clearInterval(fade);
-    }
-  },200);
+  // تشغيل مضمون
+  music.volume = 0;
+  music.play().then(()=>{
+      fadeInMusic(music);
+  }).catch(e=>{
+      console.log("Autoplay prevented:", e);
+  });
 
   const message = "كل سنة و أنتي طيبة و بصحة و سلامة و تحققي اللي تتمنيه و يارب تكون سنة سعيدة عليكي 🤎🎉";
 
@@ -182,7 +173,6 @@ function finalScene(){
   const textElement = document.getElementById("finalText");
   textElement.innerHTML = "";
   textElement.style.opacity = 1;
-  textElement.classList.add("glow");
 
   function typeWriter(){
     if(i < message.length){
@@ -197,7 +187,20 @@ function finalScene(){
   typeWriter();
 }
 
-/* 🎉 Confetti أنعم */
+/* 🔊 Fade in للصوت */
+function fadeInMusic(audio){
+  let vol = 0;
+  const fade = setInterval(()=>{
+    if(vol < 0.6){
+      vol += 0.02;
+      audio.volume = vol;
+    }else{
+      clearInterval(fade);
+    }
+  },200);
+}
+
+/* 🎉 احتفال */
 function confetti(){
   for(let i=0;i<120;i++){
     let c=document.createElement("div");
@@ -207,7 +210,6 @@ function confetti(){
     c.style.background=`hsl(${Math.random()*360},70%,65%)`;
     c.style.top="-10px";
     c.style.left=Math.random()*100+"%";
-    c.style.opacity=1;
     c.style.borderRadius="50%";
     c.style.transition="4s linear";
     document.body.appendChild(c);
@@ -227,4 +229,3 @@ function confetti(){
 
 </body>
 </html>
-
